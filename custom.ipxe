@@ -1,12 +1,19 @@
 #!ipxe
-###
-### netboot.xyz-custom menu
-###
 
-:start
-echo Hello world!
-sleep 10
+:custom
+clear custom_choice
+menu This is my menu.
+item option_one ${space} Load archlinux
+choose custom_choice || goto custom_exit
+echo ${cls}
+goto ${custom_choice}
 goto custom_exit
 
+:option_one
+kernel https://boot.netboot.xyz/memdisk raw iso
+initrd http://mirrors.evowise.com/archlinux/iso/2021.07.01/archlinux-2021.07.01-x86_64.iso
+boot || goto custom_exit
+
 :custom_exit
-exit 0
+chain utils.ipxe
+exit
